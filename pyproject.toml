@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "attakei-slides"
+version = "0.1.0"
+description = ""
+authors = ["Kazuya Takei <kazuya.takei@nijibox.co.jp>"]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Sphinx = "^3.4.3"
+sphinx-revealjs = "^1.0.0"
+sphinxemoji = "^0.1.8"
+libsass = "^0.20.1"
+
+[tool.poetry.dev-dependencies]
+black = "^20.8b1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

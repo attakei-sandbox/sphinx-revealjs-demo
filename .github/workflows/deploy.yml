@@ -18,6 +18,7 @@ jobs:
           python -m pip install poetry
           poetry install
           poetry run make html revealjs
+          touch _build/.nojekyll
       - name: Deploy to GitHub Pages
         uses: maxheld83/ghpages@v0.2.1
         env:

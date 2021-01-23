@@ -12,3 +12,9 @@ Demo for outputs of documentation and revealjs by sphinx
 * `make revealjs`で生成する、プレゼンテーションHTML
 
 をまとめてGitHub Pagesでホスティングして、元素材変換結果を眺めてもらうものとなっています。
+
+## 確認用リンク
+
+* [素材となる、rstソース](./index.rst)
+* [ドキュメンテーションHTML](https://attakei-sandbox.github.io/sphinx-revealjs-demo/html/)
+* [プレゼンテーションHTML](https://attakei-sandbox.github.io/sphinx-revealjs-demo/revealjs/)

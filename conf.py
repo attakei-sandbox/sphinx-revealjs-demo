@@ -25,6 +25,7 @@ html_theme = "alabaster"
 # -- Options for REVEALJS output -------------------------------------------------
 revealjs_static_path = html_static_path
 revealjs_css_files = [
+    "slides.css",
     "revealjs4/plugin/highlight/zenburn.css",
 ]
 revealjs_script_plugins = [
@@ -38,4 +39,3 @@ revealjs_script_conf = """
     hash: true,
 }
 """
-

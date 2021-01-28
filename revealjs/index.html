@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ngrokで、HTTPSで一時プレビューしてもらう</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/revealjs4/dist/reveal.css" />
+    <link rel="stylesheet" type="text/css" href="_static/slides.css" />
+    <link rel="stylesheet" type="text/css" href="_static/revealjs4/plugin/highlight/zenburn.css" />
+    <link rel="stylesheet" href="_static/revealjs4/dist/theme/black.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="検索" href="search.html" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    
+
+  </head><body>
+    <div class="reveal">
+        <div class="slides">
+            <section >
+<h1>ngrokで、HTTPSで一時プレビューしてもらう</h1>
+<dl class="field-list simple">
+<dt class="field-odd">update</dt>
+<dd class="field-odd"><p>2021-01-22</p>
+</dd>
+</dl>
+</section>
+<section>
+<section >
+<h2>ngrok概要</h2>
+</section>
+<section >
+<h3>ngrok</h3>
+<p><a class="reference external" href="https://ngrok.com">https://ngrok.com</a></p>
+<blockquote>
+<div><p>Spend more time programming. One command for an instant, secure URL to your localhost server through any NAT or firewall.</p>
+</div></blockquote>
+<p>ローカルホストをNAT/ファイアーウォール越しにHTTP/HTTPSサーバーとして提供できるようにするサービス</p>
+</section>
+<section >
+<h3>ngrok</h3>
+<p>出来ること</p>
+<ul class="simple">
+<li><p>HTTP/HTTPSアクセスのためのFQDN自動生成</p></li>
+<li><p>CLIコマンドによる、ポートフォワーディング</p></li>
+<li><p>アクセスのモニタリング</p></li>
+<li><p>など</p></li>
+</ul>
+</section>
+<section >
+<h3>プラン</h3>
+<p><a class="reference external" href="https://ngrok.com/pricing">https://ngrok.com/pricing</a></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>FREE</p></th>
+<th class="head"><p>BASIC</p></th>
+<th class="head"><p>PRO</p></th>
+<th class="head"><p>BUSINESS</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>料金(月額)</p></td>
+<td><p>$0</p></td>
+<td><p>$5</p></td>
+<td><p>$8.25</p></td>
+<td><p>$12</p></td>
+</tr>
+<tr class="row-odd"><td><p>HTTP/HTTPS接続</p></td>
+<td><p>⭕</p></td>
+<td><p>⭕</p></td>
+<td><p>⭕</p></td>
+<td><p>⭕</p></td>
+</tr>
+<tr class="row-even"><td><p>公開可能数</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>FQDNの予約</p></td>
+<td><p>0</p></td>
+<td><p>3</p></td>
+<td><p>5</p></td>
+<td><p>5</p></td>
+</tr>
+</tbody>
+</table>
+<p>今回のケースでは、FREEのままで十分です</p>
+</section>
+</section>
+<section>
+<section >
+<h2>ngrokを使う</h2>
+</section>
+<section >
+<h3>大まかな流れ</h3>
+<ol class="arabic simple">
+<li><p>アカウントを作成する</p></li>
+<li><p>クライアントツールをインストールする</p></li>
+<li><p>認証トークンを取得する</p></li>
+<li><p>ローカルでサーバーを起動する</p></li>
+<li><p>ngrokを起動する</p></li>
+<li><p>ブラウザで見る/見てもらう</p></li>
+</ol>
+</section>
+<section >
+<h3>アカウントを作成する</h3>
+<p>ngrokサイトの「Sign Up」から進んで、アカウント作成すれば良い</p>
+<p>※GitHub or Google のアカウント経由での認証が可能です</p>
+<div class="figure align-default">
+<img alt="_images/ngrok-signup-1.png" src="_images/ngrok-signup-1.png" />
+</div>
+</section>
+<section >
+<h3>アカウントを作成する</h3>
+<div class="figure align-default">
+<a class="reference internal image-reference" href="_images/ngrok-signup-2.png"><img alt="_images/ngrok-signup-2.png" src="_images/ngrok-signup-2.png" style="width: 40%;" /></a>
+</div>
+</section>
+<section >
+<h3>クライアントツールをインストールする</h3>
+<p>サインアップ後の画面で、クライアントツールのダウンロードが出来ます。</p>
+<p><a class="reference external" href="https://dashboard.ngrok.com/get-started/setup">https://dashboard.ngrok.com/get-started/setup</a></p>
+<p>※各種パッケージマネージャにもあるので、必要に応じてそちらを利用しましょう</p>
+</section>
+<section >
+<h3>認証トークンを取得する</h3>
+<p>CLIインストール後に、サインアップしたアカウントとローカルマシンの連携を行います。</p>
+<p><a class="reference external" href="https://dashboard.ngrok.com/get-started/setup">https://dashboard.ngrok.com/get-started/setup</a></p>
+<p>上記ページの、 <code class="docutils literal notranslate"><span class="pre">2.</span> <span class="pre">Connect</span> <span class="pre">your</span> <span class="pre">account</span></code> を参考に、認証情報の連携をしてください。</p>
+</section>
+<section >
+<h3>ローカルでサーバーを起動する/ngrokを起動する</h3>
+<p>別ターミナルで、確認したい環境向けにサーバーを起動します。
+その際に、どのポートを待ち受けに起動したかを確認してください</p>
+<p>（言語に依存するので、詳細手順は割愛）</p>
+<p>その後、CLIを起動して、プレビュー可能な環境を起動します</p>
+<pre><code data-trim data-noescape class="bash">
+# ローカルで3000番ポートで待ち受けているサーバーをngrokで外部公開したい場合
+ngrok http 3000</code></pre>
+<pre><code data-trim data-noescape class="bash">
+Session Status                online
+Account                       Kazuya Takei (Plan: Free)
+Update                        update available (version 2.3.35, Ctrl-U to update)
+Version                       2.3.35
+Region                        United States (us)
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    http://d02ee13dd561.ngrok.io -&gt; http://localhost:3000
+Forwarding                    https://d02ee13dd561.ngrok.io -&gt; http://localhost:3000</code></pre>
+</section>
+<section >
+<h3>ブラウザで見る/見てもらう</h3>
+<p><strong>'Forwarding' で表示されているURL</strong></p>
+<p>ローカルのサーバーを公開用形式のURLでアクセスできるようになります。</p>
+<p><strong>'Web Interface' で表示されているURL</strong></p>
+<p>ngrokのURL経由でアクセスしたときのリクエストヘッダーなどのモニタリングが出来ます</p>
+</section>
+</section>
+
+        </div>
+    </div>
+    
+    <script src="_static/revealjs4/dist/reveal.js"></script>
+    
+    
+      <script src="_static/revealjs4/plugin/highlight/highlight.js"></script>
+      
+    
+    <script>
+        var revealjsConfig = new Object();
+        Object.assign(revealjsConfig, 
+{
+    hash: true,
+}
+);
+        
+        
+        
+          revealjsConfig.plugins = [
+            RevealHighlight,
+          ];
+        
+        // More info https://github.com/hakimel/reveal.js#configuration
+        Reveal.initialize(revealjsConfig);
+    </script>
+
+  </body>
+</html>
